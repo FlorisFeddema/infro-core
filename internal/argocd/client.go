@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"os/exec"
-	"regexp"
 	"strings"
 
 	"github.com/argoproj/argo-cd/v2/pkg/apiclient"
@@ -91,9 +90,6 @@ func (c *Client) executeDryRun(ctx context.Context, appName string, revision str
 	filesChanged := 0
 	if diff != nil {
 		filesChanged = strings.Count(*diff, "\n===== /")
-
-		var re = regexp.MustCompile(`---[-\w/+\s.]*`)
-		diff = lo.ToPtr(re.ReplaceAllString(*diff, `\n`))
 	}
 	return model.DryRun{
 		DeployerName:   c.cfg.Name,
